@@ -12,6 +12,10 @@ android {
         versionName version
         versionCode 1
     }
+
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
 }
 
 dependencies {
