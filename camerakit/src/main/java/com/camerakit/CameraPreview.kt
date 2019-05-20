@@ -18,6 +18,7 @@ import com.camerakit.api.camera2.Camera2
 import com.camerakit.type.CameraFacing
 import com.camerakit.type.CameraFlash
 import com.camerakit.type.CameraSize
+import com.camerakit.util.hasCamera2
 import com.jpegkit.Jpeg
 import kotlinx.coroutines.*
 import kotlin.coroutines.Continuation
@@ -82,16 +83,14 @@ class CameraPreview : FrameLayout, CameraEvents {
 
     @SuppressWarnings("NewApi")
     private val cameraApi: CameraApi = ManagedCameraApi(
-            when (Build.VERSION.SDK_INT < 21 || FORCE_DEPRECATED_API) {
+            when (!hasCamera2(context) || FORCE_DEPRECATED_API) {
                 true -> Camera1(this)
                 false -> Camera2(this, context)
             })
 
-    constructor(context: Context) :
-            super(context)
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context, attributeSet: AttributeSet) :
-            super(context, attributeSet)
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
 
     init {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
